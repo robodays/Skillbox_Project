@@ -1,0 +1,105 @@
+{
+  "The-Shawshank-Redemption": {
+    "title": "The Shawshank Redemption",
+    "country": "United States",
+    "release-date": "1994",
+    "studio": "Castle Rock Entertainment",
+    "script-writer": "Frank Darabont",
+    "director": "Frank Darabont",
+    "producer": "Liz Glotzer",
+    "actors": [
+      {
+        "character": "Andy-Dufresne",
+        "actor": "Tim Robbins"
+      },
+      {
+        "character": "Ellis-Boyd",
+        "actor": "Morgan Freeman"
+      }
+    ]
+  },
+  "Sound-of-metal": {
+    "title": "Sound of metal",
+    "country": "United States",
+    "release-date": "2019",
+    "studio": "Amazon Studios",
+    "script-writer": "Darius Marder, Abraham Marder",
+    "director": "Darius Marder",
+    "producer": "Sacha Ben Harroche, Bert Hamelinck",
+    "actors": [
+      {
+        "character": "Ruben",
+        "actor": "Riz Ahmed"
+      },
+      {
+        "character": "Lou",
+        "actor": "Olivia Cooke"
+      },
+      {
+        "character": "Joe",
+        "actor": "Paul Raci"
+      }
+    ]
+  },
+  "Minari": {
+    "title": "Minari",
+    "country": "United States",
+    "release-date": "2021",
+    "studio": "Mgm",
+    "script-writer": "Lee Isaac Chung",
+    "director": "Lee Isaac Chung",
+    "producer": "Dede Gardner, Jeremy Kleiner, Christina Oh",
+    "actors": [
+      {
+        "character": "Jacob",
+        "actor": "Steven Yeun"
+      },
+      {
+        "character": "Monica",
+        "actor": "Han Ye-ri"
+      }
+    ]
+  },
+  "The-father": {
+    "title": "The father",
+    "country": "United States",
+    "release-date": "2021",
+    "studio": "Sony Pictures Classics",
+    "script-writer": "Christopher Hampton, Florian Zeller",
+    "director": "Florian Zeller",
+    "producer": "Philippe Carcassonne, Simon Friend, Jean-Louis Livi, Victor Livi, David Parfitt, Christophe Spadone",
+    "actors": [
+      {
+        "character": "Anthony",
+        "actor": "Anthony Hopkins"
+      },
+      {
+        "character": "Anne",
+        "actor": "Olivia Colman"
+      },
+      {
+        "character": "Laura",
+        "actor": "Imogen Poots"
+      }
+    ]
+  },
+  "In-the-heights": {
+    "title": "In the heights",
+    "country": "United States",
+    "release-date": "2021",
+    "studio": "Warner Bros. Pictures",
+    "script-writer": "Quiara Alegria Hudes",
+    "director": "Jon M. Chu",
+    "producer": "Lin-Manuel Miranda, Quiara Alegria Hudes, Scott Sanders, Anthony Bregman, Mara Jacobs",
+    "actors": [
+      {
+        "character": "Usnavi",
+        "actor": "Anthony Ramos"
+      },
+      {
+        "character": "Vanessa",
+        "actor": "Melissa Barrera"
+      }
+    ]
+  }
+}
