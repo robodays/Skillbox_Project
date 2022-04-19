@@ -1,13 +1,13 @@
-/*
+
 #include "gtest/gtest.h"
 
 TEST(sample_test_case, sample_test)
 {
     EXPECT_EQ(1, 1);
-    int i = 0;
 }
-*/
 
+
+/*
 
 
 #include <iostream>
@@ -18,7 +18,6 @@ int main() {
 
 
 //Information about film film.json
-
     std::cout << "Information about film" << std::endl;
 
     nlohmann::json film{
@@ -35,21 +34,18 @@ int main() {
             }
     };
 
-    std::ofstream file("../film.json");
+    std::ofstream file("film.json");
     file << film;
     file.close();
 
-
 //Films Data Analysis films.json
-
 
 
     std::cout << "Films Data Analysis" << std::endl;
 
     nlohmann::json films;
 
-    std::ifstream file2("../films.json");
-//    std::ifstream file2("E:\\GitHub\\Skillbox_Project\\films.json");
+    std::ifstream file2("films.json");
 
     file2 >> films;
     file2.close();
@@ -75,9 +71,9 @@ int main() {
     }
 
 
-
     return 0;
 
 
 }
+*/
 
