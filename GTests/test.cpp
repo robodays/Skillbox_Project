@@ -6,74 +6,147 @@ TEST(sample_test_case, sample_test)
     EXPECT_EQ(1, 1);
 }
 
+///InvertedIndex test
 
-/*
+#include "../InvertedIndex.h"
 
+using namespace std;
 
-#include <iostream>
-#include <nlohmann/json.hpp>
-#include <fstream>
+void TestInvertedIndexFunctionality(
+        const vector<string>& docs,
+        const vector<string>& requests,
+        const std::vector<vector<Entry>>& expected) {
+    std::vector<std::vector<Entry>> result;
+    InvertedIndex idx;
+    idx.UpdateDocumentBase(docs);
+    for(auto& request : requests) {
+        std::vector<Entry> word_count = idx.GetWordCount(request);
+        result.push_back(word_count);
+    }
+    ASSERT_EQ(result, expected);
+}
 
-int main() {
+TEST(TestCaseInvertedIndex, TestBasic) {
+    const vector<string> docs = {
+            "london is the capital of great britain",
+            "big ben is the nickname for the Great bell of the striking clock"
+    };
+    const vector<string> requests = {"london", "the"};
+    const vector<vector<Entry>> expected = {
+            {
+                    {0, 1}
+            }, {{
+                     0, 1}, {1, 3}
+            }
+    };
+    TestInvertedIndexFunctionality(docs, requests, expected);
+}
 
+TEST(TestCaseInvertedIndex, TestBasic2) {
+    const vector<string> docs = {
+            "milk milk milk milk water water water",
+            "milk water water",
+            "milk milk milk milk milk water water water water water",
+            "Americano Cappuccino"
+    };
+    const vector<string> requests = {"milk", "water", "cappuchino"};
+    const vector<vector<Entry>> expected = {
+            {
+                    {0, 4}, {1, 1}, {2, 5}
+            }, {
+                    {0, 2}, {1, 2}, {2, 5}
+            }, {
+                    {3, 1}
+            }
+    };
+    TestInvertedIndexFunctionality(docs, requests, expected);
+}
 
-//Information about film film.json
-    std::cout << "Information about film" << std::endl;
-
-    nlohmann::json film{
-            {"title",         "The Shawshank Redemption"},
-            {"country",       "United States"},
-            {"release-date",  "1994"},
-            {"studio",        "Castle Rock Entertainment"},
-            {"script-writer", "Frank Darabont"},
-            {"director",      "Frank Darabont"},
-            {"producer",      "Liz Glotzer"},
-            {"actors",        {
-                                      {"Andy-Dufresne", "Tim Robbins"},
-                                      {"Ellis-Boyd", "Morgan Freeman"}}
+TEST(TestCaseInvertedIndex, TestInvertedIndexMissingWord) {
+    const vector<string> docs = {
+            "a b c d e f g h i j k l",
+            "statement"
+    };
+    const vector<string> requests = {"m", "statement"};
+    const vector<vector<Entry>> expected = {
+            {
+                    {}
+            },
+            {
+                    {1, 1}
             }
     };
 
-    std::ofstream file("film.json");
-    file << film;
-    file.close();
-
-//Films Data Analysis films.json
-
-
-    std::cout << "Films Data Analysis" << std::endl;
-
-    nlohmann::json films;
-
-    std::ifstream file2("films.json");
-
-    file2 >> films;
-    file2.close();
-
-    //Anthony
-    //Olivia
-    std::cout << "Enter actor name: " << std::endl;
-    std::string actor;
-    std::cin >> actor;
-
-    for (auto itFilms = films.begin(); itFilms != films.end(); ++itFilms) {
-        for (auto itActors = films[itFilms.key()]["actors"].begin();
-             itActors != films[itFilms.key()]["actors"].end(); ++itActors) {
-            std::string str = (*itActors)["actor"];
-            if (str.find(actor) != -1) {
-                std::cout << "Found:" << std::endl;
-                std::cout << "\tFilm: " << films[itFilms.key()]["title"] << std::endl;
-                std::cout << "\tActor name: " << (*itActors)["actor"] << std::endl;
-                std::cout << "\tCharacter: " << (*itActors)["character"] << std::endl;
-                std::cout << "+++++++++++++++++++++++++" << std::endl;
-            }
-        }
-    }
-
-
-    return 0;
-
-
+    TestInvertedIndexFunctionality(docs, requests, expected);
 }
-*/
 
+///SearchServer test
+
+#include "../SearchServer.h"
+
+TEST(TestCaseSearchServer, TestSimple) {
+    const vector<string> docs = {
+            "milk milk milk milk water water water",
+            "milk water water",
+            "milk milk milk milk milk water water water water water",
+            "Americano Cappuccino"
+    };
+    const vector<string> request = {"milk water", "sugar"};
+    const std::vector<vector<RelativeIndex>> expected = {
+            {
+                    {2, 1},
+                    {0, 0.7},
+                    {1, 0.3}
+            },
+            {
+                    {}
+            }
+    };
+    InvertedIndex idx;
+    idx.UpdateDocumentBase(docs);
+    SearchServer srv(idx);
+    std::vector<vector<RelativeIndex>> result = srv.search(request);
+    ASSERT_EQ(result, expected);
+}
+TEST(TestCaseSearchServer, TestTop5) {
+    const vector<string> docs = {
+            "london is the capital of great britain",
+            "paris is the capital of france",
+            "berlin is the capital of germany",
+            "rome is the capital of italy",
+            "madrid is the capital of spain",
+            "lisboa is the capital of portugal",
+            "bern is the capital of switzerland",
+            "moscow is the capital of russia",
+            "kiev is the capital of ukraine",
+            "minsk is the capital of belarus",
+            "astana is the capital of kazakhstan",
+            "beijing is the capital of china",
+            "tokyo is the capital of japan",
+            "bangkok is the capital of thailand",
+            "welcome to moscow the capital of russia the third rome",
+            "amsterdam is the capital of netherlands",
+            "helsinki is the capital of finland",
+            "oslo is the capital of norway",
+            "stockholm is the capital of sweden",
+            "riga is the capital of latvia",
+            "tallinn is the capital of estonia",
+            "warsaw is the capital of poland",
+    };
+    const vector<string> request = {"moscow is the capital of russia"};
+    const std::vector<vector<RelativeIndex>> expected = {
+            {
+                    {7, 1},
+                    {14, 1},
+                    {0, 0.4},
+                    {1, 0.4},
+                    {2, 0.4}
+            }
+    };
+    InvertedIndex idx;
+    idx.UpdateDocumentBase(docs);
+    SearchServer srv(idx);
+    std::vector<vector<RelativeIndex>> result = srv.search(request);
+    ASSERT_EQ(result, expected);
+//    ASSERT_EQ(1, 1);
+}
