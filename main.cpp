@@ -16,8 +16,83 @@ TEST(sample_test_case, sample_test)
 
 int main() {
 
+    std::cout << "Search Engine is running" << std::endl;
+    std::ifstream fileConfigJSON;
+    //fileConfigJSON.exceptions(std::ifstream::badbit | std::ifstream::failbit);
 
-//Information about film film.json
+    fileConfigJSON.open("../config1.json");
+    if (fileConfigJSON.is_open()) {
+        std::cout << "File config.json open!" << std::endl;
+
+        nlohmann::json configData;
+
+
+        try {
+            fileConfigJSON >> configData;
+            configData.at("config");
+            std::cout << "File config.json correct!" << std::endl;
+        } catch (nlohmann::json::exception& e) {
+            std::cout << "File config.json incorrect!" << std::endl;
+            exit(1);
+        }
+        std::cout << "error" << std::endl;
+
+        //fileConfigJSON >> configData;
+        //std::cout << configData.contains("config");
+
+        /*for (auto itFilms = films.begin(); itFilms != films.end(); ++itFilms) {
+            for (auto itActors = films[itFilms.key()]["actors"].begin();
+                 itActors != films[itFilms.key()]["actors"].end(); ++itActors) {
+                std::string str = (*itActors)["actor"];
+                if (str.find(actor) != -1) {
+                    std::cout << "Found:" << std::endl;
+                    std::cout << "\tFilm: " << films[itFilms.key()]["title"] << std::endl;
+                    std::cout << "\tActor name: " << (*itActors)["actor"] << std::endl;
+                    std::cout << "\tCharacter: " << (*itActors)["character"] << std::endl;
+                    std::cout << "+++++++++++++++++++++++++" << std::endl;
+                }
+            }
+        }
+*/
+    } else {
+        std::cout << "File config.json no open!" << std::endl;
+        std::cout << "Search Engine is closed!" << std::endl;
+    }
+
+/*
+
+    nlohmann::json films;
+
+    std::ifstream file2("../films.json");
+//    std::ifstream file2("E:\\GitHub\\Skillbox_Project\\films.json");
+
+    file2 >> films;
+    file2.close();
+
+    //Anthony
+    //Olivia
+    std::cout << "Enter actor name: " << std::endl;
+    std::string actor;
+    std::cin >> actor;
+
+    for (auto itFilms = films.begin(); itFilms != films.end(); ++itFilms) {
+        for (auto itActors = films[itFilms.key()]["actors"].begin();
+             itActors != films[itFilms.key()]["actors"].end(); ++itActors) {
+            std::string str = (*itActors)["actor"];
+            if (str.find(actor) != -1) {
+                std::cout << "Found:" << std::endl;
+                std::cout << "\tFilm: " << films[itFilms.key()]["title"] << std::endl;
+                std::cout << "\tActor name: " << (*itActors)["actor"] << std::endl;
+                std::cout << "\tCharacter: " << (*itActors)["character"] << std::endl;
+                std::cout << "+++++++++++++++++++++++++" << std::endl;
+            }
+        }
+    }
+*/
+
+
+/*
+//Information about film film.json (write file)
 
     std::cout << "Information about film" << std::endl;
 
@@ -40,7 +115,7 @@ int main() {
     file.close();
 
 
-//Films Data Analysis films.json
+//Films Data Analysis films.json (read file)
 
 
 
@@ -78,6 +153,7 @@ int main() {
 
     return 0;
 
+*/
 
 }
 
