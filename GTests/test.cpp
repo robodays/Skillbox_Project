@@ -8,7 +8,7 @@ TEST(sample_test_case, sample_test)
 
 ///InvertedIndex test
 
-#include "../InvertedIndex.h"
+#include "../include/InvertedIndex.h"
 
 using namespace std;
 
@@ -82,7 +82,7 @@ TEST(TestCaseInvertedIndex, TestInvertedIndexMissingWord) {
 
 ///SearchServer test
 
-#include "../SearchServer.h"
+#include "../include/SearchServer.h"
 
 TEST(TestCaseSearchServer, TestSimple) {
     const vector<string> docs = {

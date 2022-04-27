@@ -11,31 +11,24 @@ TEST(sample_test_case, sample_test)
 
 
 #include <iostream>
-#include <nlohmann/json.hpp>
-#include <fstream>
+//#include <nlohmann/json.hpp>
+//#include <fstream>
+//#include "config.h"
+
+#include "ConverterJSON.h"
+#include "SearchServer.h"
+#include "InvertedIndex.h"
+
+
 
 int main() {
 
-    std::cout << "Search Engine is running" << std::endl;
-    std::ifstream fileConfigJSON;
-    //fileConfigJSON.exceptions(std::ifstream::badbit | std::ifstream::failbit);
+    ConverterJSON converterJson;
 
-    fileConfigJSON.open("../config1.json");
-    if (fileConfigJSON.is_open()) {
-        std::cout << "File config.json open!" << std::endl;
+    converterJson.GetTextDocuments();
 
-        nlohmann::json configData;
-
-
-        try {
-            fileConfigJSON >> configData;
-            configData.at("config");
-            std::cout << "File config.json correct!" << std::endl;
-        } catch (nlohmann::json::exception& e) {
-            std::cout << "File config.json incorrect!" << std::endl;
-            exit(1);
-        }
-        std::cout << "error" << std::endl;
+    std::cout << "max_responses: " << converterJson.GetResponsesLimit() << std::endl;
+    std::cout << "END" << std::endl;
 
         //fileConfigJSON >> configData;
         //std::cout << configData.contains("config");
@@ -54,10 +47,10 @@ int main() {
             }
         }
 */
-    } else {
+/*    } else {
         std::cout << "File config.json no open!" << std::endl;
         std::cout << "Search Engine is closed!" << std::endl;
-    }
+    }*/
 
 /*
 

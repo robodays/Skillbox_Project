@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.21)
-project(search_engine)
+project(search_engine VERSION 1.0.0)
 
-set(CMAKE_CXX_STANDARD 14)
+configure_file(include/config.h.in ${PROJECT_BINARY_DIR}/include/config.h)
+include_directories(${PROJECT_BINARY_DIR}/include)
+
+set(CMAKE_CXX_STANDARD 17)
 
 #googletest
 #[[
@@ -30,14 +33,19 @@ enable_testing()]]
 set(JSON_BuildTests OFF CACHE INTERNAL "")
 add_subdirectory(nlohmann_json)
 
+
 add_executable(search_engine
         main.cpp
-        ConverterJSON.cpp
-        ConverterJSON.h
-        InvertedIndex.cpp
-        InvertedIndex.h
-        SearchServer.cpp
-        SearchServer.h)
+        src/ConverterJSON.cpp
+        include/ConverterJSON.h
+        src/InvertedIndex.cpp
+        include/InvertedIndex.h
+        src/SearchServer.cpp
+        include/SearchServer.h
+        #${PROJECT_BINARY_BIN}/include/config.h
+        )
+
+target_include_directories(search_engine PUBLIC include)
 
 #JSON
 target_link_libraries(search_engine PRIVATE nlohmann_json::nlohmann_json)
