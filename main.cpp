@@ -11,6 +11,8 @@ TEST(sample_test_case, sample_test)
 
 
 #include <iostream>
+#include <vector>
+
 //#include <nlohmann/json.hpp>
 //#include <fstream>
 //#include "config.h"
@@ -25,9 +27,19 @@ int main() {
 
     ConverterJSON converterJson;
 
-    converterJson.GetTextDocuments();
+    std::vector<std::string> textDocuments = converterJson.GetTextDocuments();
+    int responsesLimit = converterJson.GetResponsesLimit();
+    std::cout << "max_responses: " << responsesLimit << std::endl;
 
-    std::cout << "max_responses: " << converterJson.GetResponsesLimit() << std::endl;
+    std::vector<std::string> requests = converterJson.GetRequests();
+
+
+
+    InvertedIndex invertedIndex;
+    invertedIndex.UpdateDocumentBase(textDocuments);
+
+
+
     std::cout << "END" << std::endl;
 
         //fileConfigJSON >> configData;
