@@ -48,8 +48,43 @@ std::vector<std::string> ConverterJSON::GetTextDocuments() {
 
     std::vector<std::string> textDocuments;
 
+/*
     for (auto itFiles = configData["files"].begin(); itFiles != configData["files"].end(); ++itFiles) {
+
+        std::ifstream docFile;
+
+        docFile.open(*itFiles);
+
+        if (docFile.is_open()) {
+            std::cout << inputDoc << " open!";
+        } else {
+            std::cout << inputDoc << " not open!";
+        }
         textDocuments.push_back(*itFiles);
+    }
+*/
+    for (auto itFiles = configData["files"].begin(); itFiles != configData["files"].end(); ++itFiles) {
+        std::string pathFile = *itFiles;
+        std::ifstream docFile(pathFile);
+        if (docFile.is_open()) {
+            std::cout << pathFile << " open!";
+
+/*
+            //оставляет переносы строк
+            std::string str((std::istreambuf_iterator<char>(docFile)),
+                        std::istreambuf_iterator<char>());
+*/
+
+            std::string str, str2;
+
+            while (std::getline(docFile, str2)) {
+                str += str2;
+            }
+            textDocuments.push_back(str);
+        } else {
+            std::cout << pathFile << " not open!";
+        }
+
     }
 
     return textDocuments;
