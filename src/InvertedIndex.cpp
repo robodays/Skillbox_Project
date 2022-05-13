@@ -3,11 +3,22 @@
 #include <sstream>
 #include <algorithm>
 
-#include "InvertedIndex.h"
+#include <thread>
+#include <mutex>
+
+
+#include "../include/InvertedIndex.h"
+//#include "InvertedIndex.h"
+
 
 void InvertedIndex::UpdateDocumentBase(std::vector<std::string> inputDocs) {
+    std::vector<std::thread> threads;
+    threads.reserve(inputDocs.size());
     for (int i = 0; i < inputDocs.size(); i++) {
- //       for (auto inputDoc : inputDocs) {
+
+        threads.emplace_back(&InvertedIndex::UpdateDocumentBaseOneFile, this, inputDocs[i], i);
+
+/*
 
         //removing punctuation marks
         inputDocs[i].erase(std::remove_if(inputDocs[i].begin(), inputDocs[i].end(),
@@ -28,62 +39,32 @@ void InvertedIndex::UpdateDocumentBase(std::vector<std::string> inputDocs) {
                 std::vector<Entry> vec;
                 Entry entry = {(size_t) i, 1};
                 vec.push_back(entry);
+
                 freqDictionary.insert({word, vec});
             } else {
-                //Entry entry = {(size_t) i, 1};
                 auto itDoc_id = std::find_if(freqDictionary[word].begin(), freqDictionary[word].end(),[i](Entry const& e )
                 {
                     return e.doc_id == i;
                 });
+
                 if (itDoc_id == freqDictionary[word].end()) {
                     freqDictionary[word].push_back({(size_t) i, 1});
                 } else {
-                    //freqDictionary[word][i].doc_id = i;
-                    //freqDictionary[word][i].count++;
-                    //int id = (int)(*itDoc_id).;
-                    //freqDictionary[word][id].count;
-                    (*itDoc_id).count++;
+                    itDoc_id->count++;
                 }
-
             }
-            //std::cout << word << std::endl;
         }
-
-        std::vector<std::string> words;
-        words.push_back(word);
-
-/*        std::ifstream docFile;
-
-        docFile.open(inputDoc);
-
-        if (docFile.is_open()) {
-            std::cout << inputDoc << " open!";
-        } else {
-            std::cout << inputDoc << " not open!";
-        }
-
-        std::vector<std::string> words;*/
-/*        std::string word;
-        while (!docFile.eof()) {
-            docFile >> word;
-            if (freqDictionary.find(word) == freqDictionary.end()) {
-                std::vector vec =
-                Entry entry;
-                entry =
-                freqDictionary.insert(word,)
-            }
-           words.push_back(word);
-        }
-    */
-
-/*
 */
-
-
 
     }
 
-    for (auto dict : freqDictionary) {
+
+    for (auto & thread : threads) {
+        thread.join();
+    }
+
+    //Test print dictionary
+    for (const auto& dict : freqDictionary) {
         std::cout << dict.first << " = ";
         for(auto second : dict.second) {
             std::cout << "{" << second.doc_id << "," << second.count << "} ";
@@ -94,5 +75,49 @@ void InvertedIndex::UpdateDocumentBase(std::vector<std::string> inputDocs) {
 }
 
 std::vector<Entry> InvertedIndex::GetWordCount(const std::string &word) {
-    return std::vector<Entry>();
+    auto wordCount = freqDictionary.find(word);
+    if (wordCount != freqDictionary.end()) {
+        return wordCount->second;
+    }
+    return {{}};
+}
+
+void InvertedIndex::UpdateDocumentBaseOneFile(std::string inputDoc, size_t docId) {
+
+//    std::this_thread::sleep_for(std::chrono::seconds(5));
+
+    //removing punctuation marks
+    inputDoc.erase(std::remove_if(inputDoc.begin(), inputDoc.end(),
+                                      [](unsigned char x){return std::ispunct(x);}),
+                       inputDoc.end());
+
+    //Converting a string to lowercase
+    std::transform(inputDoc.begin(), inputDoc.end(), inputDoc.begin(),
+                   [](unsigned char c) -> unsigned char { return std::tolower(c); });
+
+
+    std::istringstream ss(inputDoc);
+    std::string word;
+
+    while(std::getline(ss, word, ' ')) {
+
+        if (freqDictionary.find(word) == freqDictionary.end()) {
+            std::vector<Entry> vec;
+            Entry entry = {docId, 1};
+            vec.push_back(entry);
+
+            freqDictionary.insert({word, vec});
+        } else {
+            auto itDoc_id = std::find_if(freqDictionary[word].begin(), freqDictionary[word].end(),[docId](Entry const& e )
+            {
+                return e.doc_id == docId;
+            });
+
+            if (itDoc_id == freqDictionary[word].end()) {
+                freqDictionary[word].push_back({(size_t) docId, 1});
+            } else {
+                itDoc_id->count++;
+            }
+        }
+    }
 }

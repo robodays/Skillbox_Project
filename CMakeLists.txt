@@ -45,7 +45,7 @@ add_executable(search_engine
         #${PROJECT_BINARY_BIN}/include/config.h
         )
 
-target_include_directories(search_engine PUBLIC include)
+#target_include_directories(search_engine PUBLIC include)
 
 #JSON
 target_link_libraries(search_engine PRIVATE nlohmann_json::nlohmann_json)

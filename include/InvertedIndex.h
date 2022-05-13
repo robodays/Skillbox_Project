@@ -21,9 +21,16 @@ public:
 /**
 * Обновить или заполнить базу документов, по которой будем совершать
 поиск*
-@param texts_input содержимое документов
+@param inputDocs содержимое документов
 */
     void UpdateDocumentBase(std::vector<std::string> inputDocs);
+
+/**
+* Обновить или заполнить базу одного документа (для отдельного потока)
+@param inputDocs содержимое одного документа
+@param docId id документа
+*/
+    void UpdateDocumentBaseOneFile(std::string inputDoc, size_t docId);
 
 /**
 * Метод определяет количество вхождений слова word в загруженной базе

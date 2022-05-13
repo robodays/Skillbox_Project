@@ -8,6 +8,9 @@
     "../resources/file001.txt",
     "../resources/file002.txt",
     "../resources/file003.txt",
-    "../resources/file004.txt"
+    "../resources/file004.txt",
+    "../resources/file005long.txt8",
+    "../resources/file006long.txt8",
+    "../resources/file007long.txt8"
   ]
 }
