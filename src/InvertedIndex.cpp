@@ -96,10 +96,10 @@ void InvertedIndex::UpdateDocumentBaseOneFile(std::string inputDoc, size_t docId
                    [](unsigned char c) -> unsigned char { return std::tolower(c); });
 
 
-    std::istringstream ss(inputDoc);
+    std::istringstream stringStream(inputDoc);
     std::string word;
 
-    while(std::getline(ss, word, ' ')) {
+    while(std::getline(stringStream, word, ' ')) {
 
         if (freqDictionary.find(word) == freqDictionary.end()) {
             std::vector<Entry> vec;

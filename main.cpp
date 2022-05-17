@@ -31,12 +31,18 @@ int main() {
     int responsesLimit = converterJson.GetResponsesLimit();
     std::cout << "max_responses: " << responsesLimit << std::endl;
 
-    std::vector<std::string> requests = converterJson.GetRequests();
+//    std::vector<std::string> requests = converterJson.GetRequests();
 
 
 
     InvertedIndex invertedIndex;
     invertedIndex.UpdateDocumentBase(textDocuments);
+
+
+
+    SearchServer searchServer(invertedIndex);
+
+    searchServer.search(converterJson.GetRequests());
 
 
 
