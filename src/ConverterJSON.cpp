@@ -67,7 +67,7 @@ std::vector<std::string> ConverterJSON::GetTextDocuments() {
         std::string pathFile = *itFiles;
         std::ifstream docFile(pathFile);
         if (docFile.is_open()) {
-            std::cout << pathFile << " open!";
+            std::cout << pathFile << " open!" << std::endl;
 
 /*
             //оставляет переносы строк
@@ -82,7 +82,7 @@ std::vector<std::string> ConverterJSON::GetTextDocuments() {
             }
             textDocuments.push_back(str);
         } else {
-            std::cout << pathFile << " not open!";
+            std::cout << pathFile << " not open!" << std::endl;
         }
 
     }
