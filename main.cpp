@@ -42,7 +42,7 @@ int main() {
 
     SearchServer searchServer(invertedIndex);
 
-    //auto relevantAnswers = searchServer.search(converterJson.GetRequests());
+    auto relevantAnswers = searchServer.search(converterJson.GetRequests());
 
 
 

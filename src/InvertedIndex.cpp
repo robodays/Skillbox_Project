@@ -121,3 +121,7 @@ void InvertedIndex::UpdateDocumentBaseOneFile(std::string inputDoc, size_t docId
         }
     }
 }
+
+std::map<std::string, std::vector<Entry>> InvertedIndex::GetFreqDictionary() {
+    return freqDictionary;
+}

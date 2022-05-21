@@ -40,6 +40,13 @@ public:
 */
     std::vector<Entry> GetWordCount(const std::string& word);
 
+/**
+* Метод возвращает частотный словарь
+* @param
+* @return возвращает частотный словарь
+*/
+    std::map<std::string, std::vector<Entry>> GetFreqDictionary();
+
 private:
     std::vector<std::string> docs; // список содержимого документов
     std::map<std::string, std::vector<Entry>> freqDictionary; // частотный словарь
