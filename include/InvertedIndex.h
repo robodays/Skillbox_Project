@@ -44,8 +44,10 @@ public:
 * Метод возвращает частотный словарь
 * @param
 * @return возвращает частотный словарь
-*/
+*//*
+
     std::map<std::string, std::vector<Entry>> GetFreqDictionary();
+*/
 
 private:
     std::vector<std::string> docs; // список содержимого документов

@@ -63,7 +63,7 @@ void InvertedIndex::UpdateDocumentBase(std::vector<std::string> inputDocs) {
         thread.join();
     }
 
-    //Test print dictionary
+//Test print dictionary
     for (const auto& dict : freqDictionary) {
         std::cout << dict.first << " = ";
         for(auto second : dict.second) {
@@ -121,7 +121,7 @@ void InvertedIndex::UpdateDocumentBaseOneFile(std::string inputDoc, size_t docId
         }
     }
 }
-
+/*
 std::map<std::string, std::vector<Entry>> InvertedIndex::GetFreqDictionary() {
     return freqDictionary;
-}
+}*/
