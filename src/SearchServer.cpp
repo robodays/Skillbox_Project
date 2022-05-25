@@ -8,6 +8,8 @@
 
 std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<std::string> &queries_input) {
 
+//    std::vector<std::vector<RelativeIndex>> relativeIndexVec;
+
     for (int i = 0; i < queries_input.size(); i++) {
 
         std::string queryOne = queries_input[i];
@@ -43,12 +45,7 @@ std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<s
 
                 queryWordsMap.insert({word, countInAllDoc});
             }
-/*            if (freqDictionary.find(word) == freqDictionary.end()) {
-                queryWordsMap.insert({word, 0});
-            } else {
 
-                //queryWordsMap.insert({word, _index.GetFreqDictionary().find(word)->second.});;
-            }*/
         }
         queryWordsVec.resize(queryWordsMap.size());
         std::copy(queryWordsMap.begin(), queryWordsMap.end(), queryWordsVec.begin());
@@ -70,7 +67,8 @@ std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<s
             for (auto wordCount: _index.GetWordCount(queryWordsVec[0].first)) {
                 docIdVec.push_back(wordCount.doc_id);
             }
-            for (int i = 1; i < queryWordsVec.size(); i++) {
+//todo j
+            for (int j = 1; j < queryWordsVec.size(); j++) {
                 rareDocIdVec.clear();
 
                 for (auto wordCount: _index.GetWordCount(queryWordsVec[i].first)) {
@@ -93,7 +91,7 @@ std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<s
         std::cout << "++++++++++" << std::endl;
 
         //Absolute relevance
-        size_t maxAbsoluteRelevance = 0;
+/*        size_t maxAbsoluteRelevance = 0;
         std::vector<size_t> absoluteRelevance;
         absoluteRelevance.resize(rareDocIdVec.size());
         for (const auto& queryWord : queryWordsVec) {
@@ -118,19 +116,27 @@ std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<s
             std::cout << "absoluteRelevance " << ab << std::endl;
         }
         std::cout << "maxAbsoluteRelevance " << maxAbsoluteRelevance << std::endl;
-        std::cout << "++++++++++" << std::endl;
+        std::cout << "++++++++++" << std::endl;*/
 
 
         //Relative relevance
 
 
+/*
+        std::vector<RelativeIndex> relativeIndex;
+        for (int i = 0; i < rareDocIdVec.size(); i++) {
+            float rank = absoluteRelevance[i] / maxAbsoluteRelevance;
+            relativeIndex.push_back({rareDocIdVec[i], rank});
+        }
+
+
+        relativeIndexVec.push_back(relativeIndex);
+*/
+
     }
 
 
+    std::vector<std::vector<RelativeIndex>> relativeIndexVec;
 
-
-
-    std::vector<std::vector<RelativeIndex>> returnData;
-   // return std::vector<std::vector<RelativeIndex>>();
-    return returnData;
+    return relativeIndexVec;
 }
