@@ -14,7 +14,7 @@ add_executable(Google_Tests_run2
 #        ../include/ConverterJSON.h
         ../src/InvertedIndex.cpp
 #       ../include/InvertedIndex.h
-#       ../src/SearchServer.cpp
+        ../src/SearchServer.cpp
 #        ../include/SearchServer.h]]
         )
 

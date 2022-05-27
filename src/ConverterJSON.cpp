@@ -144,6 +144,35 @@ std::vector<std::string> ConverterJSON::GetRequests() {
     return requests;
 }
 
-void ConverterJSON::putAnswers(std::vector<std::vector<std::pair<int, float>>> answers) {
+void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> answers) {
+    nlohmann::json answersJSON;
+    nlohmann::json request;
+    for (int i = 0; i < answers.size(); i++) {
 
+        std::string numberWithZeros;
+        if (i + 1 < 10) {
+            numberWithZeros = "00" + std::to_string(i + 1);
+        } else if (i + 1 >= 100) {
+            numberWithZeros = std::to_string(i + 1);
+        } else {
+            numberWithZeros = "0" + std::to_string(i + 1);
+        }
+        //std::string numberWithZeros = i < 10 ? "00" + std::to_string(i) : "0" + std::to_string(i);
+
+        request["request" + numberWithZeros]["result"] =  answers[i].size() ? "true" : "false";
+        if (answers[i].size()) {
+            nlohmann::json relevance;
+            for (int j = 0; j < answers[i].size(); ++j) {
+                relevance["docid"] = answers[i][j].doc_id;
+                relevance["rank"] = answers[i][j].rank;
+                request["request" + numberWithZeros]["relevance"] += relevance;
+            }
+
+        }
+    }
+    answersJSON["answers"] = request;
+
+    std::ofstream file("../answers.json");
+    file << answersJSON;
+    file.close();
 }

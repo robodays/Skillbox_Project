@@ -44,7 +44,7 @@ int main() {
 
     auto relevantAnswers = searchServer.search(converterJson.GetRequests());
 
-
+    converterJson.putAnswers(relevantAnswers);
 
     std::cout << "END" << std::endl;
 

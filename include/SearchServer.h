@@ -2,7 +2,8 @@
 #define SEARCH_ENGINE_SEARCHSERVER_H
 
 #include <vector>
-#include "InvertedIndex.h"
+//#include "InvertedIndex.h"
+#include "../include/InvertedIndex.h"
 
 struct RelativeIndex{
     size_t doc_id;
