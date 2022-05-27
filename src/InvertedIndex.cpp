@@ -63,6 +63,13 @@ void InvertedIndex::UpdateDocumentBase(std::vector<std::string> inputDocs) {
         thread.join();
     }
 
+    // sorting by docId
+    for (auto& dict : freqDictionary) {
+        std::sort(dict.second.begin(), dict.second.end(), [](Entry left, Entry right) {
+            return left.doc_id < right.doc_id;
+        });
+    }
+
 //Test print dictionary
     for (const auto& dict : freqDictionary) {
         std::cout << dict.first << " = ";
@@ -79,7 +86,7 @@ std::vector<Entry> InvertedIndex::GetWordCount(const std::string &word) {
     if (wordCount != freqDictionary.end()) {
         return wordCount->second;
     }
-    return {{}};
+    return {};
 }
 
 void InvertedIndex::UpdateDocumentBaseOneFile(std::string inputDoc, size_t docId) {
