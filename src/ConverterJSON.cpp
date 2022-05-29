@@ -1,9 +1,7 @@
-#include "ConverterJSON.h"
 #include <iostream>
 #include <fstream>
-
 #include <nlohmann/json.hpp>
-
+#include "ConverterJSON.h"
 #include "config.h"
 
 std::vector<std::string> ConverterJSON::GetTextDocuments() {
@@ -21,9 +19,7 @@ std::vector<std::string> ConverterJSON::GetTextDocuments() {
     }
 
     nlohmann::json configData;
-
     fileConfigJSON >> configData;
-
     fileConfigJSON.close();
 
     try {
@@ -48,32 +44,11 @@ std::vector<std::string> ConverterJSON::GetTextDocuments() {
 
     std::vector<std::string> textDocuments;
 
-/*
-    for (auto itFiles = configData["files"].begin(); itFiles != configData["files"].end(); ++itFiles) {
-
-        std::ifstream docFile;
-
-        docFile.open(*itFiles);
-
-        if (docFile.is_open()) {
-            std::cout << inputDoc << " open!";
-        } else {
-            std::cout << inputDoc << " not open!";
-        }
-        textDocuments.push_back(*itFiles);
-    }
-*/
-    for (auto itFiles = configData["files"].begin(); itFiles != configData["files"].end(); ++itFiles) {
-        std::string pathFile = *itFiles;
+    for (auto & itFiles : configData["files"]) {
+        std::string pathFile = itFiles;
         std::ifstream docFile(pathFile);
         if (docFile.is_open()) {
             std::cout << pathFile << " open!" << std::endl;
-
-/*
-            //оставляет переносы строк
-            std::string str((std::istreambuf_iterator<char>(docFile)),
-                        std::istreambuf_iterator<char>());
-*/
 
             std::string str, str2;
 
@@ -111,6 +86,7 @@ std::vector<std::string> ConverterJSON::GetRequests() {
     std::ifstream fileRequestsJSON;
     fileRequestsJSON.exceptions(std::ifstream::badbit | std::ifstream::failbit);
 
+    // open requests.json
     try {
         fileRequestsJSON.open("../requests.json");
         std::cout << "File requests.json open!" << std::endl;
@@ -134,31 +110,30 @@ std::vector<std::string> ConverterJSON::GetRequests() {
         exit(1);
     }
 
+    // save requests in vector
     std::vector<std::string> requests;
 
-    for (auto itRequests = requestsData["requests"].begin(); itRequests != requestsData["requests"].end(); ++itRequests) {
-        requests.push_back(*itRequests);
+    for (auto & itRequests : requestsData["requests"]) {
+        requests.push_back(itRequests);
     }
-
 
     return requests;
 }
 
 void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> answers) {
+
     nlohmann::json answersJSON;
     nlohmann::json request;
+
     for (int i = 0; i < answers.size(); i++) {
 
+        // setting the request id-name
         std::string numberWithZeros;
-        if (i + 1 < 10) {
-            numberWithZeros = "00" + std::to_string(i + 1);
-        } else if (i + 1 >= 100) {
-            numberWithZeros = std::to_string(i + 1);
-        } else {
-            numberWithZeros = "0" + std::to_string(i + 1);
-        }
-        //std::string numberWithZeros = i < 10 ? "00" + std::to_string(i) : "0" + std::to_string(i);
+        if (i + 1 < 10) numberWithZeros = "00" + std::to_string(i + 1);
+        else if (i + 1 >= 100) numberWithZeros = std::to_string(i + 1);
+        else numberWithZeros = "0" + std::to_string(i + 1);
 
+        // record requests results
         request["request" + numberWithZeros]["result"] =  answers[i].size() ? "true" : "false";
         if (answers[i].size()) {
             nlohmann::json relevance;
@@ -173,6 +148,7 @@ void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> answers) 
     answersJSON["answers"] = request;
 
     std::ofstream file("../answers.json");
+    std::cout << "Writing requests results to a file answers.json!" << std::endl;
     file << answersJSON;
     file.close();
 }
