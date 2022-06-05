@@ -9,18 +9,15 @@
 int main() {
 
     ConverterJSON converterJson;
-
-    std::vector<std::string> textDocuments = converterJson.GetTextDocuments();
-    int responsesLimit = converterJson.GetResponsesLimit();
-    std::cout << "max_responses: " << responsesLimit << std::endl;
+    std::vector<std::string> textDocuments = converterJson.GetTextDocuments(); // getting the contents of the files
 
     InvertedIndex invertedIndex;
-    invertedIndex.UpdateDocumentBase(textDocuments);
+    invertedIndex.UpdateDocumentBase(textDocuments); // filling in the database
 
     SearchServer searchServer(invertedIndex);
-    auto relevantAnswers = searchServer.search(converterJson.GetRequests());
+    auto relevantAnswers = searchServer.search(converterJson.GetRequests()); // search results
 
-    converterJson.putAnswers(relevantAnswers);
+    converterJson.putAnswers(relevantAnswers); // putting the results in JSON file
 
     std::cout << "END" << std::endl;
 

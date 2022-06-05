@@ -10,12 +10,8 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 # adding the Google_Tests_run target
 add_executable(Google_Tests_run2
         test.cpp
-#        ../src/ConverterJSON.cpp
-#        ../include/ConverterJSON.h
         ../src/InvertedIndex.cpp
-#       ../include/InvertedIndex.h
         ../src/SearchServer.cpp
-#        ../include/SearchServer.h]]
         )
 
 # linking Google_Tests_run with DateConverter_lib which will be tested
