@@ -134,15 +134,22 @@ void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> answers) 
         else numberWithZeros = "0" + std::to_string(i + 1);
 
         // record requests results
-        request["request" + numberWithZeros]["result"] =  answers[i].size() ? "true" : "false";
-        if (answers[i].size()) {
+        if (!answers[i].empty()) {
+            request["request" + numberWithZeros]["result"] = "true";
+
             nlohmann::json relevance;
-            for (int j = 0; j < answers[i].size(); ++j) {
-                relevance["docid"] = answers[i][j].doc_id;
-                relevance["rank"] = answers[i][j].rank;
+            int responsesLimit = GetResponsesLimit();
+            for (auto & answer : answers[i]) {
+                if (responsesLimit == 0) {
+                    break;
+                }
+                responsesLimit--;
+                relevance["docid"] = answer.doc_id;
+                relevance["rank"] = answer.rank;
                 request["request" + numberWithZeros]["relevance"] += relevance;
             }
-
+        } else {
+            request["request" + numberWithZeros]["result"] =  "false";
         }
     }
     answersJSON["answers"] = request;

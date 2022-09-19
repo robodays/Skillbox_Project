@@ -131,7 +131,7 @@ TEST(TestCaseSearchServer, TestTop5) {
             "tokyo is the capital of japan",
             "bangkok is the capital of thailand",
             "welcome to moscow is the capital of russia third rome",
-//            "welcome to moscow is the capital of russia the third rome",
+//            "welcome to moscow the capital of russia the third rome",
             "amsterdam is the capital of netherlands",
             "helsinki is the capital of finland",
             "oslo is the capital of norway",
