@@ -60,7 +60,7 @@ std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<s
         std::cout << "--------------" << std::endl;*/
 
 
-        relativeIndexVec.push_back(SearchRelativeIndex(queryWordsVec));
+        relativeIndexVec.push_back(searchRelativeIndex(queryWordsVec));
     }
 
 // test print
@@ -76,7 +76,7 @@ std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<s
 }
 
 
-std::vector<RelativeIndex> SearchServer::SearchRelativeIndex(std::vector<std::pair<std::string,size_t>> &queryWordsVec) {
+std::vector<RelativeIndex> SearchServer::searchRelativeIndex(std::vector<std::pair<std::string,size_t>> &queryWordsVec) {
 
     std::vector<size_t> docIdVec;
     std::vector<size_t> tmpDocIdVec;

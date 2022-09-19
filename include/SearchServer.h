@@ -37,7 +37,7 @@ private:
 * @param queryWordsVec вектор слов запроса отсортированный по количеству встречающихся слов во всех документов
 * @return возвращает вектор относительной релевантности для одного запроса
 */
-    std::vector<RelativeIndex> SearchRelativeIndex(std::vector<std::pair<std::string, size_t>> &queryWordsVec);
+    std::vector<RelativeIndex> searchRelativeIndex(std::vector<std::pair<std::string, size_t>> &queryWordsVec);
 
     InvertedIndex& _index;
 
