@@ -60,75 +60,7 @@ std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<s
         std::cout << "--------------" << std::endl;*/
 
 
-        std::vector<size_t> docIdVec;
-        std::vector<size_t> tmpDocIdVec;
-
-        std::vector<RelativeIndex> relativeIndex;
-
-        if (queryWordsVec[0].second != 0) {
-            for (auto wordCount: _index.GetWordCount(queryWordsVec[0].first)) {
-                docIdVec.push_back(wordCount.doc_id);
-            }
-
-            for (int i = 1; i < queryWordsVec.size(); i++) {
-                for (auto wordCount: _index.GetWordCount(queryWordsVec[i].first)) {
-                    if (std::find(docIdVec.begin(), docIdVec.end(), wordCount.doc_id) != docIdVec.end()) {
-                        tmpDocIdVec.push_back(wordCount.doc_id);
-                    }
-                }
-
-                docIdVec.clear();
-                docIdVec.resize(tmpDocIdVec.size());
-                std::copy(tmpDocIdVec.begin(), tmpDocIdVec.end(), docIdVec.begin());
-                tmpDocIdVec.clear();
-            }
-
-// test print
-            /*for (auto docId : docIdVec) {
-                std::cout << "unique docId: " << docId << std::endl;
-            }
-            std::cout << "++++++++++" << std::endl;*/
-
-            //Absolute relevance
-            size_t maxAbsoluteRelevance = 0;
-            std::vector<size_t> absoluteRelevance;
-            absoluteRelevance.resize(docIdVec.size());
-            for (const auto& queryWord : queryWordsVec) {
-                for (auto wordCount : _index.GetWordCount(queryWord.first)) {
-                    auto itDocId = std::find(docIdVec.begin(), docIdVec.end(), wordCount.doc_id);
-                    if (itDocId != docIdVec.end()) {
-
-                        int index;
-                        index = std::distance(docIdVec.begin(), itDocId);
-                        absoluteRelevance[index] += wordCount.count;
-
-                        if (absoluteRelevance[index] > maxAbsoluteRelevance) {
-                            maxAbsoluteRelevance = absoluteRelevance[index];
-                        }
-                    }
-                }
-            }
-// test print
-/*            for (auto ab : absoluteRelevance) {
-                std::cout << "absoluteRelevance " << ab << std::endl;
-            }
-            std::cout << "maxAbsoluteRelevance " << maxAbsoluteRelevance << std::endl;
-            std::cout << "++++++++++" << std::endl;*/
-
-
-            //Relative relevance
-
-            for (int i = 0; i < docIdVec.size(); i++) {
-                float rank = (float) absoluteRelevance[i] / (float) maxAbsoluteRelevance;
-                relativeIndex.push_back({docIdVec[i], rank});
-            }
-
-            std::sort(relativeIndex.begin(),relativeIndex.end(), [](const RelativeIndex &left, const RelativeIndex &right) {
-                return left.rank > right.rank;
-            });
-        }
-
-        relativeIndexVec.push_back(relativeIndex);
+        relativeIndexVec.push_back(SearchRelativeIndex(queryWordsVec));
     }
 
 // test print
@@ -141,4 +73,79 @@ std::vector<std::vector<RelativeIndex>> SearchServer::search(const std::vector<s
     std::cout << "======++++++++++" << std::endl;
 
     return relativeIndexVec;
+}
+
+
+std::vector<RelativeIndex> SearchServer::SearchRelativeIndex(std::vector<std::pair<std::string,size_t>> &queryWordsVec) {
+
+    std::vector<size_t> docIdVec;
+    std::vector<size_t> tmpDocIdVec;
+
+
+    std::vector<RelativeIndex> relativeIndex;
+
+    if (queryWordsVec[0].second != 0) {
+        for (auto wordCount: _index.GetWordCount(queryWordsVec[0].first)) {
+            docIdVec.push_back(wordCount.doc_id);
+        }
+
+        for (int i = 1; i < queryWordsVec.size(); i++) {
+            for (auto wordCount: _index.GetWordCount(queryWordsVec[i].first)) {
+                if (std::find(docIdVec.begin(), docIdVec.end(), wordCount.doc_id) != docIdVec.end()) {
+                    tmpDocIdVec.push_back(wordCount.doc_id);
+                }
+            }
+
+            docIdVec.clear();
+            docIdVec.resize(tmpDocIdVec.size());
+            std::copy(tmpDocIdVec.begin(), tmpDocIdVec.end(), docIdVec.begin());
+            tmpDocIdVec.clear();
+        }
+
+// test print
+        /*for (auto docId : docIdVec) {
+            std::cout << "unique docId: " << docId << std::endl;
+        }
+        std::cout << "++++++++++" << std::endl;*/
+
+        //Absolute relevance
+        size_t maxAbsoluteRelevance = 0;
+        std::vector<size_t> absoluteRelevance;
+        absoluteRelevance.resize(docIdVec.size());
+        for (const auto& queryWord : queryWordsVec) {
+            for (auto wordCount : _index.GetWordCount(queryWord.first)) {
+                auto itDocId = std::find(docIdVec.begin(), docIdVec.end(), wordCount.doc_id);
+                if (itDocId != docIdVec.end()) {
+
+                    int index;
+                    index = std::distance(docIdVec.begin(), itDocId);
+                    absoluteRelevance[index] += wordCount.count;
+
+                    if (absoluteRelevance[index] > maxAbsoluteRelevance) {
+                        maxAbsoluteRelevance = absoluteRelevance[index];
+                    }
+                }
+            }
+        }
+// test print
+/*            for (auto ab : absoluteRelevance) {
+                std::cout << "absoluteRelevance " << ab << std::endl;
+            }
+            std::cout << "maxAbsoluteRelevance " << maxAbsoluteRelevance << std::endl;
+            std::cout << "++++++++++" << std::endl;*/
+
+
+        //Relative relevance
+
+        for (int i = 0; i < docIdVec.size(); i++) {
+            float rank = (float) absoluteRelevance[i] / (float) maxAbsoluteRelevance;
+            relativeIndex.push_back({docIdVec[i], rank});
+        }
+
+        std::sort(relativeIndex.begin(),relativeIndex.end(), [](const RelativeIndex &left, const RelativeIndex &right) {
+            return left.rank > right.rank;
+        });
+    }
+
+    return relativeIndex;
 }

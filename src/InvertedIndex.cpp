@@ -64,6 +64,7 @@ void InvertedIndex::UpdateDocumentBaseOneFile(std::string inputDoc, size_t docId
 
     while(std::getline(stringStream, word, ' ')) {
 
+        m_freqDictionary.lock();
         if (freqDictionary.find(word) == freqDictionary.end()) {
             std::vector<Entry> vec;
             Entry entry = {docId, 1};
@@ -82,6 +83,7 @@ void InvertedIndex::UpdateDocumentBaseOneFile(std::string inputDoc, size_t docId
                 itDoc_id->count++;
             }
         }
+        m_freqDictionary.unlock();
     }
 }
 
