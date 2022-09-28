@@ -156,6 +156,6 @@ void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> answers) 
 
     std::ofstream file("../answers.json");
     std::cout << "Writing requests results to a file answers.json!" << std::endl;
-    file << answersJSON;
+    file << answersJSON.dump(4);
     file.close();
 }
