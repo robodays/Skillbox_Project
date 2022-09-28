@@ -144,16 +144,17 @@ TEST(TestCaseSearchServer, TestTop5) {
     const std::vector<vector<RelativeIndex>> expected = {
             {
                     {7, 1},
-                    {14, 1}/*,
-                    {0, 0.4},
-                    {1, 0.4},
-                    {2, 0.4}*/
+                    {14, 1},
+                    {0, 0.666666687},
+                    {1, 0.666666687},
+                    {2, 0.666666687}
             }
     };
     InvertedIndex idx;
     idx.UpdateDocumentBase(docs);
     SearchServer srv(idx);
     std::vector<vector<RelativeIndex>> result = srv.search(request);
+    result[0].resize(5);
     ASSERT_EQ(result, expected);
 }
 /*
